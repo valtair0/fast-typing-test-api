@@ -1,17 +1,14 @@
-﻿using Application.Entities;
+﻿using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.ViewModels
+namespace Application.CQRS.Queries.TypingExams.GetTypingExams
 {
-    public class VM_TypingExam
+    public class GetByNameTypingExamsRequest :IRequest<GetByNameTypingExamsResponse>
     {
-        public string Name { get; set; }
-        public string Text { get; set; }
-
         public string Language { get; set; }
 
         public string Category { get; set; }

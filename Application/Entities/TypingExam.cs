@@ -10,11 +10,12 @@ namespace Application.Entities
 {
     public class TypingExam :BaseEntity
     {
+        public string Name { get; set; }
         public string Text { get; set; }
 
-        public Guid LanguageID { get; set; }
+        public string Language { get; set; }
 
-        public Guid CategoryID { get; set; }
+        public string Category { get; set; }
 
 
 

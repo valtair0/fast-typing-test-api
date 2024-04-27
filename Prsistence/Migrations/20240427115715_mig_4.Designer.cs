@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence.Contexts;
@@ -11,9 +12,11 @@ using Persistence.Contexts;
 namespace Prsistence.Migrations
 {
     [DbContext(typeof(FastTypingTestDbContext))]
-    partial class FastTypingTestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240427115715_mig_4")]
+    partial class mig_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,14 +161,14 @@ namespace Prsistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Category")
+                    b.Property<string>("CategoryID")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Language")
+                    b.Property<string>("LanguageID")
                         .IsRequired()
                         .HasColumnType("text");
 

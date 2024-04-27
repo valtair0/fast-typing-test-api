@@ -45,5 +45,7 @@ namespace Prsistence.Repositories
             return await query.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
 
         }
+
+        
     }
 }

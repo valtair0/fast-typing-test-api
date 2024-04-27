@@ -12,5 +12,8 @@ namespace Application.Repositories
     {
         IQueryable<T> GetAll(bool tracking = true);
         Task<T> GetByIdAsync(string id, bool tracking = true);
+        
+
+
     }
 }

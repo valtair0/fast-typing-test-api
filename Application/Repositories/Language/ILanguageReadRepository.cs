@@ -8,5 +8,7 @@ namespace Application.Repositories.Language
 {
     public interface ILanguageReadRepository : IReadRepository<Entities.Language>
     {
+        Task<Entities.Language> GetByName(string name, bool tracking = true);
+
     }
 }

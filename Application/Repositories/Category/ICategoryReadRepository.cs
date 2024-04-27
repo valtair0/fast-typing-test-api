@@ -8,5 +8,6 @@ namespace Application.Repositories.Category
 {
     public interface ICategoryReadRepository : IReadRepository<Entities.Category>
     {
+        Task<Entities.Category> GetByName(string name, bool tracking = true);
     }
 }
