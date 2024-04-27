@@ -1,5 +1,4 @@
-﻿using Application.CQRS.Queries.Category.GetByIdAsync;
-using Application.CQRS.Queries.TypingExams.GetTypingExams;
+﻿using Application.CQRS.Queries.TypingExams.GetTypingExams;
 using Application.Entities;
 using Application.Repositories.Category;
 using Application.Repositories.Language;
