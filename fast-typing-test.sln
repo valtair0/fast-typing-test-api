@@ -3,15 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{7C64EF92-621C-49FC-B0C9-B4271F02817A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{C35F4B53-2783-4B31-8F7B-6D640DCFE62D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6E33BD19-E263-49F2-8B16-A42A64F1D309}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{0747E474-1F35-40A1-A927-409C7AB36192}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prsistence", "Prsistence\Prsistence.csproj", "{97DE12A5-3DD9-4A56-8F45-3C30A8699B1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Prsistence\Persistence.csproj", "{97DE12A5-3DD9-4A56-8F45-3C30A8699B1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,10 +30,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C35F4B53-2783-4B31-8F7B-6D640DCFE62D} = {7C64EF92-621C-49FC-B0C9-B4271F02817A}
-		{0747E474-1F35-40A1-A927-409C7AB36192} = {6E33BD19-E263-49F2-8B16-A42A64F1D309}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9FE0D4A4-4F34-4A9C-8C18-B9B0EDD594BF}

@@ -12,5 +12,7 @@ namespace Application.CQRS.Queries.TypingExams.GetTypingExams
         public string Language { get; set; }
 
         public string Category { get; set; }
+
+        public string? Name { get; set; }
     }
 }

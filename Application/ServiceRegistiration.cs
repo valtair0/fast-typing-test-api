@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Application.Abstractions.Token;
+using Application.Services.Tokens;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,9 @@ namespace Application
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
-            services.AddMediatR (typeof(ServiceRegistiration).Assembly);
+            services.AddMediatR(typeof(ServiceRegistiration));
+            services.AddScoped<ITokenHandler, TokenHandler>();
+
         }
     }
 }

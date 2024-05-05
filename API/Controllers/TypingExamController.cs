@@ -112,10 +112,8 @@ namespace API.Controllers
 
             return Ok(new
             {
-                response.Name,
-                response.Text,
-                response.Language,
-                response.Category
+              
+                data = response.datas
 
             });
 

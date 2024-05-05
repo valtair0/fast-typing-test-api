@@ -26,10 +26,21 @@ namespace Persistence
         {
 
             services.AddDbContext<FastTypingTestDbContext>(
-                options => options.UseNpgsql("User ID=postgres;Password=ov43Vk25klv2!;Host=localhost;Port=5432;Database=fasttypingtest;")
+                options => options.UseNpgsql(Configuration.ConnectionString)
                 );
 
-            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<FastTypingTestDbContext>();
+            services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+
+                options.Password.RequiredLength = 8;
+
+                options.Password.RequireDigit = false;
+
+                options.Password.RequireLowercase = false;
+
+                options.Password.RequireUppercase = false;
+            }).AddEntityFrameworkStores<FastTypingTestDbContext>();
 
 
 

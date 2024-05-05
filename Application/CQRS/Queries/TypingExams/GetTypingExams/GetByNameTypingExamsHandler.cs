@@ -39,29 +39,25 @@ namespace Application.CQRS.Queries.TypingExams.GetTypingExams
                 Category = categoryName.Name,
             });
 
+           
+
+            if (request.Name != null)
+            {
+                typingExams = typingExams.Where(x => x.Name == request.Name);
+            }
+
 
             if (typingExams.Any())
             {
-
-
-                return new()
+                return new GetByNameTypingExamsResponse()
                 {
-                    Name = typingExams.FirstOrDefault().Name,
-
-                    Text = typingExams.FirstOrDefault().Text,
-
-                    Category = typingExams.FirstOrDefault().Category,
-
-                    Language = typingExams.FirstOrDefault().Language
-
+                    datas = typingExams
                 };
             }
-            else
-            {
 
-               throw new Exception("No typing exams found for specified criteria");
-               
-            }
+
+            throw new Exception("No typing exams found for specified criteria");
+
         }
     }
 }
