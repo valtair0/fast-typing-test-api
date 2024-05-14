@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories.Language
 {
-    public interface ILanguageWriteRepository : IWriteRepository<Entities.Language>
+    public interface ILanguageWriteRepository : IWriteRepository<Domain.Entities.Language>
     {
     }
 }

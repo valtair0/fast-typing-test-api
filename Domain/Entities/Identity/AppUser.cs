@@ -6,11 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Entities.Identity
+namespace Domain.Entities.Identity
 {
     public class AppUser : IdentityUser<string>
     {
         public string NameSurname { get; set; }
 
+        public string? RefreshToken { get; set; }
+
+        public DateTime? RefreshTokenEndTime { get; set; }
     }
 }
+    

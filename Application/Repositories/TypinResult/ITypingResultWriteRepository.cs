@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories.TypinResult
 {
-    public interface ITypingResultWriteRepository: IWriteRepository<Application.Entities.TypingResult>
+    public interface ITypingResultWriteRepository: IWriteRepository<Domain.Entities.TypingResult>
     {
     }
 }

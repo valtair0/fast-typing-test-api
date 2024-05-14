@@ -9,6 +9,6 @@ namespace Application.CQRS.Queries.TypingExams.GetTypingExams
 {
     public class GetByNameTypingExamsResponse
     {
-      public IQueryable<VM_TypingExam> datas { get; set; }
+      public IQueryable<TypingExamRequestDTO> datas { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Entities.Identity
+namespace Domain.Entities.Identity
 {
     public class AppRole : IdentityRole<string>
     {

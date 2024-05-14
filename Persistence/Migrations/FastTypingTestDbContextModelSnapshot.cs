@@ -22,7 +22,7 @@ namespace Prsistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Application.Entities.Category", b =>
+            modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,25 @@ namespace Prsistence.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Application.Entities.Identity.AppRole", b =>
+            modelBuilder.Entity("Domain.Entities.Difficulty", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Difficulty");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Identity.AppRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -66,7 +84,7 @@ namespace Prsistence.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Application.Entities.Identity.AppUser", b =>
+            modelBuilder.Entity("Domain.Entities.Identity.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -112,6 +130,12 @@ namespace Prsistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RefreshTokenEndTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -134,7 +158,7 @@ namespace Prsistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Application.Entities.Language", b =>
+            modelBuilder.Entity("Domain.Entities.Language", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +176,7 @@ namespace Prsistence.Migrations
                     b.ToTable("Languages");
                 });
 
-            modelBuilder.Entity("Application.Entities.TypingExam", b =>
+            modelBuilder.Entity("Domain.Entities.TypingExam", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,6 +188,10 @@ namespace Prsistence.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Difficulty")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Language")
                         .IsRequired()
@@ -182,7 +210,7 @@ namespace Prsistence.Migrations
                     b.ToTable("TypingExam");
                 });
 
-            modelBuilder.Entity("Application.Entities.TypingResult", b =>
+            modelBuilder.Entity("Domain.Entities.TypingResult", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,8 +225,9 @@ namespace Prsistence.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("TypingExamId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("TypingExamId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Userid")
                         .IsRequired()
@@ -323,7 +352,7 @@ namespace Prsistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Application.Entities.Identity.AppRole", null)
+                    b.HasOne("Domain.Entities.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -332,7 +361,7 @@ namespace Prsistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Application.Entities.Identity.AppUser", null)
+                    b.HasOne("Domain.Entities.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -341,7 +370,7 @@ namespace Prsistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Application.Entities.Identity.AppUser", null)
+                    b.HasOne("Domain.Entities.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -350,13 +379,13 @@ namespace Prsistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Application.Entities.Identity.AppRole", null)
+                    b.HasOne("Domain.Entities.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Application.Entities.Identity.AppUser", null)
+                    b.HasOne("Domain.Entities.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -365,7 +394,7 @@ namespace Prsistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Application.Entities.Identity.AppUser", null)
+                    b.HasOne("Domain.Entities.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

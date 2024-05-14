@@ -1,4 +1,4 @@
-﻿using Application.Entities;
+﻿using Domain.Entities;
 using Application.Repositories.TypingExam;
 using Application.Repositories.TypingExamm;
 using Persistence.Contexts;

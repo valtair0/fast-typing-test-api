@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories.Category
 {
-    public interface ICategoryReadRepository : IReadRepository<Entities.Category>
+    public interface ICategoryReadRepository : IReadRepository<Domain.Entities.Category>
     {
-        Task<Entities.Category> GetByName(string name, bool tracking = true);
+        Task<Domain.Entities.Category> GetByName(string name, bool tracking = true);
     }
 }

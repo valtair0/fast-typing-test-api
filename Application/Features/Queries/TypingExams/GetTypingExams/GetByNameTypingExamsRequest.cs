@@ -14,5 +14,7 @@ namespace Application.CQRS.Queries.TypingExams.GetTypingExams
         public string Category { get; set; }
 
         public string? Name { get; set; }
+
+        public string Difficulty { get; set; }
     }
 }

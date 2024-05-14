@@ -1,4 +1,4 @@
-﻿using Application.Entities;
+﻿using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +15,7 @@ namespace Application.ViewModels
         public string Language { get; set; }
 
         public string Category { get; set; }
+
+        public string Difficulty { get; set; }
     }
 }

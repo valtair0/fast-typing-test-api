@@ -1,4 +1,4 @@
-﻿using Application.Entities.Identity;
+﻿using Domain.Entities.Identity;
 using Application.Repositories.Category;
 using Application.Repositories.Language;
 using Application.Repositories.TypingExam;
@@ -16,6 +16,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Repositories.Difficulty;
+using Persistence.Repositories.Difficulty;
+using Application.Abstractions.Services;
+using Application.Abstractions.Services.Authentications;
+using Persistence.Services;
 
 namespace Persistence
 {
@@ -57,6 +62,13 @@ namespace Persistence
 
             services.AddScoped<ILanguageWriteRepository, LanguageWriteRepository > ();
             services.AddScoped<ILanguageReadRepository, LanguageReadRepository>();
+
+            services.AddScoped<IDifficultyReadRepository, DifficultyReadRepository>();
+            services.AddScoped<IDifficultyWriteRepository, DifficultyWriteRepository>();
+
+            services.AddScoped<IUserService,UserService>();
+            services.AddScoped<IAuthService,AuthService>();
+
 
         }
 

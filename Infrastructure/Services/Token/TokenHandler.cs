@@ -1,11 +1,14 @@
 ﻿using Application.Abstractions.Token;
 using Application.DTOs;
+using Domain.Entities.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +23,7 @@ namespace Infrastructure.Services.Token
             _configuration = configuration;
         }
 
-        public TokenDTO CreateAccessToken(int minute)
+        public TokenDTO CreateAccessToken(int minute,AppUser user)
         {
             TokenDTO tokenDTO = new TokenDTO();
 
@@ -35,13 +38,30 @@ namespace Infrastructure.Services.Token
                 audience: _configuration["Token:Audience"],
                 expires: tokenDTO.AccessTokenExpiration,
                 notBefore: DateTime.UtcNow,
-                signingCredentials: signingCredentials
+                signingCredentials: signingCredentials,
+                claims: new List<Claim>
+                {
+                    new(ClaimTypes.Name,user.UserName)
+                }
                 );
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             tokenDTO.AccessToken = tokenHandler.WriteToken(securityToken);
 
+
+            tokenDTO.RefreshToken = CreateRefreshToken();
+
             return tokenDTO;
+
+        }
+
+        public string CreateRefreshToken()
+        {
+            byte[] number = new byte[32];
+            using RandomNumberGenerator random = RandomNumberGenerator.Create();
+            random.GetBytes(number);
+
+            return Convert.ToBase64String(number);
 
         }
     }

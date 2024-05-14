@@ -1,4 +1,6 @@
 ﻿
+using Application.Abstractions.Services;
+using Application.DTOs.User;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,41 +13,31 @@ namespace Application.Features.Commands.AppUser.CreateUser
 {
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest, CreateUserCommandResponse>
     {
-        readonly UserManager<Entities.Identity.AppUser> _userManager;
+        readonly IUserService _userService;
 
-        public CreateUserCommandHandler(UserManager<Entities.Identity.AppUser> userManager)
+        public CreateUserCommandHandler(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
-
 
         public async Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
         {
 
-            IdentityResult result = await _userManager.CreateAsync(new()
+            CreateUserResponse response = await _userService.CreateUser(new DTOs.User.CreateUser()
             {
-                Id=Guid.NewGuid().ToString(),
-                UserName = request.Username,
                 Email = request.Email,
                 NameSurname = request.NameSurname,
-            }, request.Password);
+                Password = request.Password,
+                Username = request.Username,
+            });
 
-            CreateUserCommandResponse response = new CreateUserCommandResponse() { Succeeded = result.Succeeded };
-
-            if (result.Succeeded)
+            return new()
             {
-                 response.Message = "Kullanıcı başarıyla eklendi";
-            }
-            else
-            {
-                foreach(var error  in result.Errors)
-                {
-                    response.Message += error.Description;  
-                }
-            }
+                Message = response.Message,
+                Succeeded = response.Succeeded,
+            };
 
-            return response;
-          // throw new UserCreateFailedException();
+            // throw new UserCreateFailedException();
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories.Language
 {
-    public interface ILanguageReadRepository : IReadRepository<Entities.Language>
+    public interface ILanguageReadRepository : IReadRepository<Domain.Entities.Language>
     {
-        Task<Entities.Language> GetByName(string name, bool tracking = true);
+        Task<Domain.Entities.Language> GetByName(string name, bool tracking = true);
 
     }
 }

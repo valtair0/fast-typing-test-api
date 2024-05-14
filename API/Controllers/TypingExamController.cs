@@ -1,11 +1,12 @@
 ﻿using Application.CQRS.Queries.TypingExams.GetTypingExams;
-using Application.Entities;
 using Application.Repositories.Category;
+using Application.Repositories.Difficulty;
 using Application.Repositories.Language;
 using Application.Repositories.TypingExam;
 using Application.Repositories.TypingExamm;
 using Application.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Net;
@@ -16,6 +17,7 @@ namespace API.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Admin")]
     public class TypingExamController : ControllerBase
     {
 
@@ -25,10 +27,11 @@ namespace API.Controllers
         private readonly ITypingExamReadRepository _typingExamReadRepository;
         private readonly ILanguageReadRepository _languageReadRepository;
         private readonly ICategoryReadRepository _categoryReadRepository;
-
+        private readonly IDifficultyReadRepository _difficultyReadRepository;
+        private readonly IDifficultyWriteRepository _difficultyWriteRepository;
         readonly IMediator _mediator;
 
-        public TypingExamController(ITypingExamWriteRepository typingExamWriteRepository, ICategoryWriteRepository categoryWriteRepository, ILanguageWriteRepository languageWriteRepository, ITypingExamReadRepository typingExamReadRepository, ILanguageReadRepository languageReadRepository, ICategoryReadRepository categoryReadRepository, IMediator mediator)
+        public TypingExamController(ITypingExamWriteRepository typingExamWriteRepository, ICategoryWriteRepository categoryWriteRepository, ILanguageWriteRepository languageWriteRepository, ITypingExamReadRepository typingExamReadRepository, ILanguageReadRepository languageReadRepository, ICategoryReadRepository categoryReadRepository, IDifficultyReadRepository difficultyReadRepository, IDifficultyWriteRepository difficultyWriteRepository, IMediator mediator)
         {
             _typingExamWriteRepository = typingExamWriteRepository;
             _categoryWriteRepository = categoryWriteRepository;
@@ -36,6 +39,8 @@ namespace API.Controllers
             _typingExamReadRepository = typingExamReadRepository;
             _languageReadRepository = languageReadRepository;
             _categoryReadRepository = categoryReadRepository;
+            _difficultyReadRepository = difficultyReadRepository;
+            _difficultyWriteRepository = difficultyWriteRepository;
             _mediator = mediator;
         }
 
@@ -44,8 +49,10 @@ namespace API.Controllers
         {
             var categoryName = await _categoryReadRepository.GetByName(model.Category);
             var languageName = await _languageReadRepository.GetByName(model.Language);
+            var difficultyName = await _difficultyReadRepository.GetByName(model.Difficulty);
 
-            if (categoryName == null || languageName == null)
+
+            if (categoryName == null || languageName == null || difficultyName == null)
             {
                 return NotFound("Category or language not found in db");
             }
@@ -58,6 +65,7 @@ namespace API.Controllers
                     Name = model.Name,
                     Language = languageName.Id.ToString(),
                     Category = categoryName.Id.ToString(),
+                    Difficulty = difficultyName.Id.ToString(),
                 }
             );
 
@@ -83,6 +91,22 @@ namespace API.Controllers
         }
 
         [HttpPost("[action]")]
+        public async Task<IActionResult> CreateDifficulty(VM_Difficulty model)
+        {
+            await _difficultyWriteRepository.AddAsync(
+                   new()
+                   {
+                       Name = model.Name,
+                   }
+            );
+
+
+            await _difficultyWriteRepository.SaveAsync();
+
+            return StatusCode((int)HttpStatusCode.Created);
+        }
+
+        [HttpPost("[action]")]
         public async Task<IActionResult> CreateLanguage(VM_Language model)
         {
             await _languageWriteRepository.AddAsync(
@@ -98,7 +122,9 @@ namespace API.Controllers
         }
 
 
-       
+
+
+
 
 
         [HttpGet("[action]")]
@@ -110,7 +136,7 @@ namespace API.Controllers
 
             return Ok(new
             {
-              
+
                 data = response.datas
 
             });

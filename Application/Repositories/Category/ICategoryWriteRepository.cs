@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories.Category
 {
-    public interface ICategoryWriteRepository : IWriteRepository<Entities.Category>
+    public interface ICategoryWriteRepository : IWriteRepository<Domain.Entities.Category>
     {
     }
 }

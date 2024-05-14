@@ -1,11 +1,11 @@
-﻿using Application.Entities.Common;
+﻿using Domain.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Entities
+namespace Domain.Entities
 {
     public class TypingResult : BaseEntity
     {
@@ -13,7 +13,7 @@ namespace Application.Entities
         public int Accuracy { get; set; }
         public int CorrectCount { get; set; }
         public int WrongCount { get; set; }
-        public Guid TypingExamId { get; set; }
+        public string TypingExamId { get; set; }
         public string Userid { get; set; }
 
 

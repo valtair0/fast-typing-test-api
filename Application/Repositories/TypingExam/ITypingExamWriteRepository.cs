@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories.TypingExam
 {
-    public interface ITypingExamWriteRepository : IWriteRepository<Application.Entities.TypingExam>
+    public interface ITypingExamWriteRepository : IWriteRepository<Domain.Entities.TypingExam>
     {
     }
 }

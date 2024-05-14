@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Prsistence.Repositories.Language
 {
-    public class LanguageWriteRepository : WriteRepository<Application.Entities.Language>, ILanguageWriteRepository
+    public class LanguageWriteRepository : WriteRepository<Domain.Entities.Language>, ILanguageWriteRepository
 
     {
         public LanguageWriteRepository(FastTypingTestDbContext context) : base(context)

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Prsistence.Repositories.Category
 {
-    public class CategoryReadRepository : ReadRepository<Application.Entities.Category>, ICategoryReadRepository
+    public class CategoryReadRepository : ReadRepository<Domain.Entities.Category>, ICategoryReadRepository
     {
         public CategoryReadRepository(FastTypingTestDbContext context) : base(context)
         {
         }
 
-        public async Task<Application.Entities.Category> GetByName(string name, bool tracking = true)
+        public async Task<Domain.Entities.Category> GetByName(string name, bool tracking = true)
         {
             var query = Table.AsQueryable();
             if (!tracking)

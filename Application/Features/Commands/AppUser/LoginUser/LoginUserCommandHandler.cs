@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Token;
+﻿using Application.Abstractions.Services;
+using Application.Abstractions.Token;
 using Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -12,44 +13,22 @@ namespace Application.Features.Commands.AppUser.LoginUser
 {
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, LoginUserCommandResponse>
     {
-        readonly UserManager<Entities.Identity.AppUser> userManager;
-        readonly SignInManager<Entities.Identity.AppUser> signInManager;
-        readonly ITokenHandler _tokenHandler;
+       readonly IAuthService _authService;
 
-        public LoginUserCommandHandler(UserManager<Entities.Identity.AppUser> userManager, SignInManager<Entities.Identity.AppUser> signInManager, ITokenHandler tokenHandler)
+        public LoginUserCommandHandler(IAuthService authService)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            _tokenHandler = tokenHandler;
+            _authService = authService;
         }
 
         public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
 
-            var user = await userManager.FindByNameAsync(request.UsernameOrEmail);
-            if (user == null)
-                user = await userManager.FindByEmailAsync(request.UsernameOrEmail);
-            
+            var response = await _authService.LoginAsync(request.UsernameOrEmail, request.password, 15);
 
-            if (user == null)
-                throw new DirectoryNotFoundException("Kullanıcı adı veya şifre hatalı");
-            
-
-            SignInResult result = await signInManager.CheckPasswordSignInAsync(user, request.password, false);
-
-            if (result.Succeeded)
+            return new LoginUserSuccessCommandResponse()
             {
-               TokenDTO token = _tokenHandler.CreateAccessToken(15);
-
-                return new LoginUserSuccessCommandResponse() { Token = token };
-
-
-            }
-
-
-            return new LoginUserFailCommandResponse() { ErrorMessage = "Kullanıcı adı veya şifre hatalı" };
-
-
+                Token = response
+            };
 
 
 

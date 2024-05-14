@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Prsistence.Repositories.Category
 {
-    public class CategoryWriteRepository : WriteRepository<Application.Entities.Category>, ICategoryWriteRepository
+    public class CategoryWriteRepository : WriteRepository<Domain.Entities.Category>, ICategoryWriteRepository
     {
         public CategoryWriteRepository(FastTypingTestDbContext context) : base(context)
         {

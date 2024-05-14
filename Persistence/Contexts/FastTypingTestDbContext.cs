@@ -1,7 +1,6 @@
-﻿
-using Application.Entities;
-using Application.Entities.Common;
-using Application.Entities.Identity;
+﻿using Domain.Entities;
+using Domain.Entities.Common;
+using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +19,8 @@ namespace Persistence.Contexts
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Language> Languages { get; set; }
+
+        public DbSet<Difficulty> Difficulty { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

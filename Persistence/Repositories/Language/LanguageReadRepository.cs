@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Prsistence.Repositories.Language
 {
-    public class LanguageReadRepository : ReadRepository<Application.Entities.Language>, ILanguageReadRepository
+    public class LanguageReadRepository : ReadRepository<Domain.Entities.Language>, ILanguageReadRepository
     {
         public LanguageReadRepository(FastTypingTestDbContext context) : base(context)
         {
         }
 
-        public async Task<Application.Entities.Language> GetByName(string name, bool tracking = true)
+        public async Task<Domain.Entities.Language> GetByName(string name, bool tracking = true)
         {
             var query = Table.AsQueryable();
             if (!tracking)
