@@ -1,4 +1,5 @@
-﻿using Application.CQRS.Queries.TypingExams.GetTypingExams;
+﻿using Application.Abstractions.Hubs;
+using Application.CQRS.Queries.TypingExams.GetTypingExams;
 using Application.Repositories.Category;
 using Application.Repositories.Difficulty;
 using Application.Repositories.Language;

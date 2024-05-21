@@ -9,6 +9,7 @@ namespace Application.Abstractions.Hubs
     public interface ITypingExamsHubService
     {
         Task TypingExamAddedMessageAsync(string message);
+        Task AddUserToGroup(string connectionId,string groupname);
 
     }
 }

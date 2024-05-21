@@ -22,6 +22,8 @@ namespace Persistence.Contexts
 
         public DbSet<Difficulty> Difficulty { get; set; }
 
+        public DbSet<Oneversusone> Oneversusone { get; set; }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             //  ChangeTracker yeni eklenen veriyi yakalamak için kullanılır.

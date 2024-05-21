@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Application.Repositories.Difficulty;
+using Application.Abstractions.Hubs;
 
 namespace Application.CQRS.Queries.TypingExams.GetTypingExams
 {
@@ -21,17 +22,23 @@ namespace Application.CQRS.Queries.TypingExams.GetTypingExams
         readonly ILanguageReadRepository _languageReadRepository;
         readonly ITypingExamReadRepository _typingExamReadRepository;
         readonly IDifficultyReadRepository _difficultyReadRepository;
+        readonly ITypingExamsHubService _typingExamsHubService;
 
-        public GetByNameTypingExamsHandler(ICategoryReadRepository categoryReadRepository, ILanguageReadRepository languageReadRepository, ITypingExamReadRepository typingExamReadRepository, IDifficultyReadRepository difficultyReadRepository)
+        public GetByNameTypingExamsHandler(ICategoryReadRepository categoryReadRepository, ILanguageReadRepository languageReadRepository, ITypingExamReadRepository typingExamReadRepository, IDifficultyReadRepository difficultyReadRepository, ITypingExamsHubService typingExamsHubService)
         {
             _categoryReadRepository = categoryReadRepository;
             _languageReadRepository = languageReadRepository;
             _typingExamReadRepository = typingExamReadRepository;
             _difficultyReadRepository = difficultyReadRepository;
+            _typingExamsHubService = typingExamsHubService;
         }
 
         public async Task<GetByNameTypingExamsResponse> Handle(GetByNameTypingExamsRequest request, CancellationToken cancellationToken)
         {
+
+            await _typingExamsHubService.TypingExamAddedMessageAsync("Typing Exam eklendi");
+
+
             var categoryName = await _categoryReadRepository.GetByName(request.Category);
             var languageName = await _languageReadRepository.GetByName(request.Language);
             var difficultyName = await _difficultyReadRepository.GetByName(request.Difficulty);

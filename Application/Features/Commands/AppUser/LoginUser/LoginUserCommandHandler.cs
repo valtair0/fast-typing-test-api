@@ -23,7 +23,7 @@ namespace Application.Features.Commands.AppUser.LoginUser
         public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
 
-            var response = await _authService.LoginAsync(request.UsernameOrEmail, request.password, 15);
+            var response = await _authService.LoginAsync(request.UsernameOrEmail, request.password, 500);
 
             return new LoginUserSuccessCommandResponse()
             {

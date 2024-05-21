@@ -131,7 +131,7 @@ namespace Persistence.Services
         {
            AppUser? user = _userManager.Users.FirstOrDefault(u=>u.RefreshToken==refreshToken);
 
-            if (user!=null&&user?.RefreshTokenEndTime>DateTime.UtcNow)
+            if (user!=null&&user.RefreshTokenEndTime>DateTime.UtcNow)
             {
                 TokenDTO token = _tokenHandler.CreateAccessToken(15,user);
                 await _userService.UpdateRefreshToken(refreshToken, user, token.AccessTokenExpiration, 15);

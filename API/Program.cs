@@ -15,6 +15,7 @@ using Serilog.Context;
 using Microsoft.AspNetCore.HttpLogging;
 using API.Extensions;
 using SignalRServices;
+using SignalRServices.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,12 +74,36 @@ builder.Services.AddCors(
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer("Admin", options =>
 {
+     options.Authority = "https://localhost:7157"; 
+
+    
+    options.Events = new JwtBearerEvents
+      {
+          OnMessageReceived = context =>
+          {
+              var accessToken = context.Request.Query["access_token"];
+
+              // If the request is for our hub...
+              var path = context.HttpContext.Request.Path;
+              if (!string.IsNullOrEmpty(accessToken) &&
+                  (path.StartsWithSegments("/typingexam-hub")))
+              {
+                  // Read the token out of the query string
+                  context.Token = accessToken;
+              }
+              return Task.CompletedTask;
+          }
+      };
+
+
+
     options.TokenValidationParameters = new()
     {
         ValidateAudience = true,
         ValidateIssuer = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
+        
 
         ValidAudience = builder.Configuration["Token:Audience"],
         ValidIssuer = builder.Configuration["Token:Issuer"],
@@ -86,15 +111,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         LifetimeValidator = (before, expires, token, param) => expires != null ? expires > DateTime.UtcNow : false,
 
         NameClaimType = ClaimTypes.Name,
-
-
-
     };
 });
 
 
 var app = builder.Build();
 
+app.UseCors();
 
 
 // Configure the HTTP request pipeline.
@@ -104,6 +127,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 app.ConfigureExceptionHandler<Program>(app.Services.GetRequiredService<ILogger<Program>>());
 
 app.UseSerilogRequestLogging();
@@ -111,7 +136,6 @@ app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 
 app.UseHttpLogging();
-app.UseCors();
 
 
 app.UseAuthentication();
@@ -132,6 +156,8 @@ app.Use(async (context, next) =>
 
 app.MapControllers();
 app.MapHubs();
+
+
 
 
 app.Run();

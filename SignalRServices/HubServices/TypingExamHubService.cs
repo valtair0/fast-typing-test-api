@@ -17,10 +17,19 @@ namespace SignalRServices.HubServices
         {
             _context = context;
         }
+     
+
 
         public async Task TypingExamAddedMessageAsync(string message)
         {
             await _context.Clients.All.SendAsync("reciveTypingExam", message);
+        }
+
+        public async Task AddUserToGroup(string connectionId, string groupname)
+        {
+            await _context.Groups.AddToGroupAsync(connectionId, groupname);
+
+
         }
     }
 }

@@ -21,6 +21,8 @@ using Persistence.Repositories.Difficulty;
 using Application.Abstractions.Services;
 using Application.Abstractions.Services.Authentications;
 using Persistence.Services;
+using Application.Repositories.Oneversusone;
+using Persistence.Repositories.Oneversusone;
 
 namespace Persistence
 {
@@ -65,6 +67,10 @@ namespace Persistence
 
             services.AddScoped<IDifficultyReadRepository, DifficultyReadRepository>();
             services.AddScoped<IDifficultyWriteRepository, DifficultyWriteRepository>();
+
+            services.AddScoped<IOneversusoneReadRepository, OneversusoneReadRepository>();
+            services.AddScoped<IOneversusoneWriteRepository, OneversusoneWriteRepository>();
+
 
             services.AddScoped<IUserService,UserService>();
             services.AddScoped<IAuthService,AuthService>();

@@ -1,6 +1,7 @@
 ﻿
 using Application.Abstractions.Services;
 using Application.DTOs.User;
+using Application.Repositories.Oneversusone;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -14,10 +15,12 @@ namespace Application.Features.Commands.AppUser.CreateUser
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest, CreateUserCommandResponse>
     {
         readonly IUserService _userService;
+        readonly IOneversusoneWriteRepository _oneversusoneWriteRepository;
 
-        public CreateUserCommandHandler(IUserService userService)
+        public CreateUserCommandHandler(IUserService userService, IOneversusoneWriteRepository oneversusoneWriteRepository)
         {
             _userService = userService;
+            _oneversusoneWriteRepository = oneversusoneWriteRepository;
         }
 
         public async Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
@@ -30,6 +33,21 @@ namespace Application.Features.Commands.AppUser.CreateUser
                 Password = request.Password,
                 Username = request.Username,
             });
+
+            if (response.Succeeded)
+            {
+                await _oneversusoneWriteRepository.AddAsync(
+              new()
+              {
+                  ConnectionID = null,
+                  Username = request.Username,
+              }
+          );
+
+                await _oneversusoneWriteRepository.SaveAsync();
+            }
+
+
 
             return new()
             {
