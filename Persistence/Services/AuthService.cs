@@ -120,7 +120,7 @@ namespace Persistence.Services
                 TokenDTO token = _tokenHandler.CreateAccessToken(tokenlifetime, user);
                 await _userService.UpdateRefreshToken(token.RefreshToken, user, token.AccessTokenExpiration, 10);
 
-
+                token.Name = user.NameSurname;
                 return token;
             }
 

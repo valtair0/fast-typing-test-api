@@ -11,5 +11,9 @@ namespace Domain.Entities
     {
         public string Username { get; set; }
         public string? ConnectionID { get; set; }
+
+        public string? RoomName { get; set; }
+
+
     }
 }

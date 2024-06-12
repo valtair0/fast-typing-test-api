@@ -74,7 +74,7 @@ builder.Services.AddCors(
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer("Admin", options =>
 {
-     options.Authority = "https://localhost:7157"; 
+    options.Authority = "https://localhost:7157/"; 
 
     
     options.Events = new JwtBearerEvents

@@ -28,8 +28,16 @@ namespace SignalRServices.HubServices
         public async Task AddUserToGroup(string connectionId, string groupname)
         {
             await _context.Groups.AddToGroupAsync(connectionId, groupname);
+        }
 
+        public async Task AddUserToOnlineGroup(string connectionId)
+        {
+            await _context.Groups.AddToGroupAsync(connectionId, "Online");
+        }
 
+        public Task ListOnlineUsers()
+        {
+            throw new NotImplementedException();
         }
     }
 }

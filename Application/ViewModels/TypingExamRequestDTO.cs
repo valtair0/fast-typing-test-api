@@ -8,6 +8,8 @@ namespace Application.ViewModels
 {
     public class TypingExamRequestDTO
     {
+        public string? Id { get; set; }
+
         public string Name { get; set; }
         public string[] Text { get; set; }
 

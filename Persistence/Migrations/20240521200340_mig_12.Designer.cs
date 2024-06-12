@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence.Contexts;
@@ -11,9 +12,11 @@ using Persistence.Contexts;
 namespace Prsistence.Migrations
 {
     [DbContext(typeof(FastTypingTestDbContext))]
-    partial class FastTypingTestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240521200340_mig_12")]
+    partial class mig_12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,15 +249,8 @@ namespace Prsistence.Migrations
                     b.Property<int>("CorrectCount")
                         .HasColumnType("integer");
 
-                    b.Property<string>("CorrectWords")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Seconds")
-                        .HasColumnType("integer");
 
                     b.Property<string>("TypingExamId")
                         .IsRequired()
@@ -270,13 +266,9 @@ namespace Prsistence.Migrations
                     b.Property<int>("WrongCount")
                         .HasColumnType("integer");
 
-                    b.Property<string>("WrongWords")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.ToTable("TypingResult");
+                    b.ToTable("TypingTest");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

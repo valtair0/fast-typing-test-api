@@ -12,7 +12,10 @@ namespace SignalRServices
     {
         public static void MapHubs(this WebApplication webApplication)
         {
-            webApplication.MapHub<TypingExamHub>("/typingexam-hub");
+            webApplication.MapHub<TypingExamHub>("/typingexam-hub", options =>
+            {
+                options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets;
+            });
         }
     }
 }

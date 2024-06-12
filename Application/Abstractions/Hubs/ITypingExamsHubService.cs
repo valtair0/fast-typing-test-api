@@ -11,5 +11,9 @@ namespace Application.Abstractions.Hubs
         Task TypingExamAddedMessageAsync(string message);
         Task AddUserToGroup(string connectionId,string groupname);
 
+        Task AddUserToOnlineGroup(string connectionId);
+
+        Task ListOnlineUsers();
+
     }
 }

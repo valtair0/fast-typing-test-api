@@ -41,7 +41,7 @@ namespace Infrastructure.Services.Token
                 signingCredentials: signingCredentials,
                 claims: new List<Claim>
                 {
-                    new(ClaimTypes.Name,user.UserName)
+                    new(ClaimTypes.Name,user.Id),
                 }
                 );
 

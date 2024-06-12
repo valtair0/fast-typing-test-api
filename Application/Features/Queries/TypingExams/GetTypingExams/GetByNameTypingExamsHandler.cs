@@ -46,11 +46,12 @@ namespace Application.CQRS.Queries.TypingExams.GetTypingExams
 
             var typingExams = _typingExamReadRepository.GetAll().Where(x => x.Category == categoryName.Id.ToString() && x.Language == languageName.Id.ToString() && x.Difficulty == difficultyName.Id.ToString() ).Select(x => new TypingExamRequestDTO
             {
-                Name = x.Name,
+                Id = x.Id.ToString(),
                 Text = JsonConvert.DeserializeObject<string[]>(x.Text),
+                Name = x.Name,
                 Language = languageName.Name,
                 Category = categoryName.Name,
-                Difficulty = difficultyName.Name
+                Difficulty = difficultyName.Name,
             });
 
            

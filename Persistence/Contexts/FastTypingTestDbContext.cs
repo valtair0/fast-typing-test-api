@@ -14,7 +14,7 @@ namespace Persistence.Contexts
         }
 
         public DbSet<TypingExam> TypingExam { get; set;}
-        public DbSet<TypingResult> TypingTest { get; set; }
+        public DbSet<TypingResult> TypingResult { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 

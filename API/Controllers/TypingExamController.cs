@@ -4,11 +4,16 @@ using Application.Repositories.Difficulty;
 using Application.Repositories.Language;
 using Application.Repositories.TypingExam;
 using Application.Repositories.TypingExamm;
+using Application.Repositories.TypinResult;
 using Application.ViewModels;
+using Domain.Entities;
+using Domain.Entities.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Net;
 using System.Xml;
 
@@ -29,9 +34,14 @@ namespace API.Controllers
         private readonly ICategoryReadRepository _categoryReadRepository;
         private readonly IDifficultyReadRepository _difficultyReadRepository;
         private readonly IDifficultyWriteRepository _difficultyWriteRepository;
+        private readonly ITypingResultReadRepository _typingResultReadRepository;
+        private readonly ITypingResultWriteRepository _typingResultWriteRepository;
+        readonly UserManager<AppUser> _userManager;
         readonly IMediator _mediator;
 
-        public TypingExamController(ITypingExamWriteRepository typingExamWriteRepository, ICategoryWriteRepository categoryWriteRepository, ILanguageWriteRepository languageWriteRepository, ITypingExamReadRepository typingExamReadRepository, ILanguageReadRepository languageReadRepository, ICategoryReadRepository categoryReadRepository, IDifficultyReadRepository difficultyReadRepository, IDifficultyWriteRepository difficultyWriteRepository, IMediator mediator)
+
+
+        public TypingExamController(ITypingExamWriteRepository typingExamWriteRepository, ICategoryWriteRepository categoryWriteRepository, ILanguageWriteRepository languageWriteRepository, ITypingExamReadRepository typingExamReadRepository, ILanguageReadRepository languageReadRepository, ICategoryReadRepository categoryReadRepository, IDifficultyReadRepository difficultyReadRepository, IDifficultyWriteRepository difficultyWriteRepository, IMediator mediator, ITypingResultReadRepository typingResultReadRepository, ITypingResultWriteRepository typingResultWriteRepository, UserManager<AppUser> userManager)
         {
             _typingExamWriteRepository = typingExamWriteRepository;
             _categoryWriteRepository = categoryWriteRepository;
@@ -42,6 +52,9 @@ namespace API.Controllers
             _difficultyReadRepository = difficultyReadRepository;
             _difficultyWriteRepository = difficultyWriteRepository;
             _mediator = mediator;
+            _typingResultReadRepository = typingResultReadRepository;
+            _typingResultWriteRepository = typingResultWriteRepository;
+            _userManager = userManager;
         }
 
         [HttpPost("[action]")]
@@ -143,6 +156,108 @@ namespace API.Controllers
 
         }
 
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SendResults([FromBody] TypingResultRequest_VM model)
+        {
+            var data = User.Identity.Name;
+
+
+
+            var typingExam = await _typingExamReadRepository.GetByIdAsync(model.TypingExamId);
+
+         
+            var jsoncorrectwords = model.CorrectWords.Replace(",", "");
+
+            var wpmcalulation = jsoncorrectwords.Length / 5;
+
+            var accuracyCalculation = (model.CorrectCount / (double)(model.CorrectCount + model.WrongCount)) * 100;
+
+
+
+            TypingResult typingResult = new()
+            {
+                TypingExamId = model.TypingExamId,
+                Userid = data,
+                Wpm = wpmcalulation,
+                Accuracy = (int)accuracyCalculation,
+                CorrectCount = model.CorrectCount,
+                WrongCount = model.WrongCount,
+                CorrectWords = model.CorrectWords,
+                WrongWords = model.WrongWords,
+                Seconds = model.Seconds
+            };
+
+
+            var test  =  await _typingResultWriteRepository.AddAsync(typingResult);
+
+            var testo =  await _typingResultWriteRepository.SaveAsync();
+
+
+            return Ok(typingResult.Id);
+
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetResult([FromQuery] string id)
+        {
+            var data = await _typingResultReadRepository.GetByIdAsync(id);
+
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == data.Userid);
+
+            var typingexam = await _typingExamReadRepository.GetByIdAsync(data.TypingExamId);
+
+            var diffculty = await _difficultyReadRepository.GetByIdAsync(typingexam.Difficulty);
+
+            var language = await _languageReadRepository.GetByIdAsync(typingexam.Language);
+
+
+
+            TypingResultResponse response = new()
+            {
+                Wpm = data.Wpm,
+                Accuracy = data.Accuracy,
+                CorrectCount = data.CorrectCount,
+                WrongCount = data.WrongCount,
+                CorrectWords = data.CorrectWords,
+                WrongWords = data.WrongWords,
+                Username = user.UserName,
+                Seconds = data.Seconds,
+                Language = language.Name,
+                Difficulty = diffculty.Name
+
+            };
+
+
+            return Ok(response);
+
+        }
+
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetLeaderBoard()
+        {
+            var data =  _typingResultReadRepository.GetAll().OrderByDescending(x => x.Wpm).Take(10).ToList().Select(x => new TypingResultResponse()
+            {
+                Wpm = x.Wpm,
+                Accuracy = x.Accuracy,
+                CorrectCount = x.CorrectCount,
+                WrongCount = x.WrongCount,
+                CorrectWords = x.CorrectWords,
+                WrongWords = x.WrongWords,
+                Username = _userManager.Users.FirstOrDefault(u => u.Id == x.Userid).UserName,
+                Seconds = x.Seconds,
+                Language = _languageReadRepository.GetByIdAsync(_typingExamReadRepository.GetByIdAsync(x.TypingExamId).Result.Language).Result.Name,
+                Difficulty = _difficultyReadRepository.GetByIdAsync(_typingExamReadRepository.GetByIdAsync(x.TypingExamId).Result.Difficulty).Result.Name
+            });
+
+            
+
+            return Ok(
+                data
+                );
+
+        }
 
 
 
